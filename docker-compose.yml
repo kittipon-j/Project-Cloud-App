@@ -1,0 +1,73 @@
+version: "3"
+services:
+  web:
+    ports:
+      - "5500:3000"
+    build: ./front_end
+
+  app-check:
+    build: ./check_app
+    
+    networks:
+      face-net:
+    
+    ports:
+      - "5000:5000"
+
+    depends_on:
+      - db
+
+    volumes:
+      - face-vol:/data
+
+  plate-check:
+    build: ./plate_check
+
+    ports:
+      - "5555:5555"
+    
+    networks:
+      plate-net:
+
+    depends_on:
+      - db
+
+  app-reg:
+    build: ./reg_app
+    
+    networks:
+      face-net:
+    
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - db
+    
+    volumes: 
+      - face-vol:/data
+
+  db:
+    image: postgres:16.8
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: '147258'
+
+    ports:
+      - "5433:5432"
+
+    networks:
+      face-net:
+      plate-net:
+
+    volumes: 
+      - ./db:/docker-entrypoint-initdb.d/
+      - db-vol:/var/lib/postgresql/data
+
+networks:
+  face-net:
+  plate-net:
+  
+volumes:
+  db-vol:
+  face-vol:
