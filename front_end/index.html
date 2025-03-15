@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Data Analytics</title>
+</head>
+<body>
+    <div class="sidebar">
+        <nav>
+            <div class="data">
+                <h1>Data Analytics</h1>
+            </div>
+            <ul>
+                <li><a href="#" onclick="showSection('detection')">ตรวจจับ</a></li>
+                <li><a href="#" onclick="showSection('addData')">เพิ่มข้อมูล</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="content">
+        <!-- ส่วนการตรวจจับ (Face Detection และ License Plate Detection) -->
+        <div id="detection" class="section">
+            <!-- คอนเทนเนอร์หลักสำหรับส่วนการตรวจจับทั้งหมด -->
+            <div class="detection-container">
+                <!-- ส่วนตรวจจับใบหน้า -->
+                <div class="face">
+                    <h3>ตรวจจับใบหน้า</h3>
+                    <!-- กล่องสำหรับอัพโหลดรูปภาพใบหน้า -->
+                    <div class="file-box" id="fileBox1" enctype="multipart/form-data">
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <!-- คอนเทนเนอร์สำหรับแสดงตัวอย่างรูปภาพ -->
+                            <div class="upload-preview-container">
+                                <!-- Input สำหรับเลือกไฟล์รูปภาพ (ซ่อนไว้) -->
+                                <input 
+                                    type="file" 
+                                    id="imageInput1" 
+                                    name="file" 
+                                    accept="image/*" 
+                                    required 
+                                    onchange="previewImage(event, 1)" 
+                                    style="display: none;" 
+                                />
+                                <!-- ปุ่มสำหรับเปิด file dialog -->
+                                <button type="button" onclick="document.getElementById('imageInput1').click()">เลือกไฟล์</button>
+                                <!-- แสดงตัวอย่างรูปภาพที่เลือก -->
+                                <img id="preview1" style="display: none; width: 100%; height: auto;" />
+                            </div>
+                        </form>
+                    </div>
+                    <!-- ปุ่มสำหรับเริ่มการตรวจจับใบหน้า -->
+                    <button type="button" onclick="uploadFile(1)">ยืนยัน</button>
+                    <!-- ส่วนแสดงผลการตรวจจับใบหน้า -->
+                    <div id="detectionResult1" class="detection-result" style="display:none;">
+                        <h4>ผลการตรวจจับ</h4>
+                        <p>ชื่อ-นามสกุล: <span id="name1"></span></p>
+                        <p>รหัสผู้ใช้งาน: <span id="studentId1"></span></p>
+                    </div>
+                </div>
+
+                <!-- ส่วนตรวจจับป้ายทะเบียน -->
+                <div class="sign">
+                    <h3>ตรวจจับทะเบียนรถ</h3>
+                    <!-- กล่องสำหรับอัพโหลดรูปภาพป้ายทะเบียน -->
+                    <div class="file-box" id="fileBox2" enctype="multipart/form-data">
+                        <form id="uploadForm2" enctype="multipart/form-data">
+                            <!-- คอนเทนเนอร์สำหรับแสดงตัวอย่างรูปภาพ -->
+                            <div class="upload-preview-container">
+                                <!-- Input สำหรับเลือกไฟล์รูปภาพ (ซ่อนไว้) -->
+                                <input 
+                                    type="file" 
+                                    id="imageInput2" 
+                                    name="file" 
+                                    accept="image/*" 
+                                    required 
+                                    onchange="previewImage(event, 2)" 
+                                    style="display: none;" 
+                                />
+                                <!-- ปุ่มสำหรับเปิด file dialog -->
+                                <button type="button" onclick="document.getElementById('imageInput2').click()">เลือกไฟล์</button>
+                                <!-- แสดงตัวอย่างรูปภาพที่เลือก -->
+                                <img id="preview2" style="display: none; width: 100%; height: auto;" />
+                            </div>
+                        </form>
+                    </div>
+                    <!-- ปุ่มสำหรับเริ่มการตรวจจับป้ายทะเบียน -->
+                    <button type="button" onclick="uploadFile(2)">ยืนยัน</button>
+                    <!-- ส่วนแสดงผลการตรวจจับป้ายทะเบียน -->
+                    <div id="detectionResult2" class="detection-result" style="display:none;">
+                        <h4>ผลการตรวจจับ</h4>
+                        <p>ทะเบียนรถ: <span id="licensePlate2"></span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- ปุ่มรีเซ็ตการตรวจจับทั้งหมด -->
+            <button class="refresh-button" onclick="refreshDetectionSection()">Refresh</button>
+        </div>
+        <div id="addData" class="section" style="display:none;">
+            <h2>เพิ่มข้อมูล</h2>   
+            
+            <!-- ฟอร์มสำหรับอัพโหลดวิดีโอและข้อมูลผู้ใช้ -->
+            <form id="uploadForm" enctype="multipart/form-data">
+                <!-- ส่วนอัพโหลดวิดีโอ -->
+                <div class="file-box" id="fileBox3">
+                    <!-- คอนเทนเนอร์สำหรับแสดงตัวอย่างวิดีโอ -->
+                    <div class="upload-preview-container">
+                        <!-- Input สำหรับเลือกไฟล์วิดีโอ (ซ่อนไว้และควบคุมด้วยปุ่ม) -->
+                        <input 
+                            type="file" 
+                            id="video" 
+                            name="video" 
+                            accept="video/*" 
+                            required 
+                            onchange="previewVideo(event, 3)" 
+                            style="display: none;" 
+                        />
+                        <!-- ปุ่มสำหรับเปิด file dialog -->
+                        <button type="button" onclick="document.getElementById('video').click()">เลือกวิดีโอ</button>
+                        <!-- Element สำหรับแสดงตัวอย่างวิดีโอ -->
+                        <video id="preview3" style="display: none; width: 100%; height: auto;" controls></video>
+                    </div>
+                </div>
+
+                <!-- กลุ่มฟอร์มสำหรับข้อมูลผู้ใช้ -->
+                <div class="form-group">
+                    <label for="user_id">รหัสผู้ใช้งาน:</label>
+                    <input type="text" id="user_id" name="user_id" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">ชื่อ:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastname">นามสกุล:</label>
+                    <input type="text" id="lastname" name="lastname" required>
+                </div>
+
+                <!-- ปุ่มสำหรับส่งข้อมูลและเริ่มการประมวลผล -->
+                <button type="button" onclick="uploadVideo()">อัพโหลด</button>
+            </form>
+
+            <!-- ส่วนแสดงสถานะการประมวลผล -->
+            <div id="processingStatus" style="margin-top: 10px;"></div>
+            
+            <!-- ปุ่มรีเซ็ตฟอร์มและล้างข้อมูล -->
+            <button class="refresh-button" onclick="clearAddDataForm()">Refresh</button>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
