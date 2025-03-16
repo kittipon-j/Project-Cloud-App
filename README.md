@@ -5,9 +5,7 @@ This project is a cloud-based application that includes multiple services for fa
 
 ## Member
 นายกิตติภณ จิตเจริญ 643040184-0 
-
 นายปัณณวิชญ์ ยุทธกล้า 643040531-5
-
 นายพชร สายไทย 643040533-1
 
 ## Steps
