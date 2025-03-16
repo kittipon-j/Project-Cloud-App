@@ -11,7 +11,7 @@ This project is a cloud-based application that includes multiple services for fa
 ## Steps
 ### 1. Clone the repository:
 ``` bash
-git clone <repository-url>
+git clone https://github.com/kittipon-j/Project-Cloud-App.git
 cd Project-Cloud-App
 ```
 
